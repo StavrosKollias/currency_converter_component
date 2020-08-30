@@ -118,7 +118,7 @@ body{
     padding: 1rem;
 }
 
-.select-curency{
+.currency-select{
     border: none;
     width:100%;
     padding: 1rem;
@@ -126,18 +126,21 @@ body{
     transition: all 0.45s ease-in-out;
 }
 
-.select-curency:focus{
+.currency-select:focus{
     outline: none;
     color: var(--blue);
     font-weight: bold;
 }
 
 .error-msg{
-    display: none;
+   display: none;
     margin: 0;
     bottom: -2rem;
     color: var(--red);
+    /* transform: ; */
+    transition: all 0.45s ease-in-out;
 }
+
 
 .result-converter{
     color: var(--blue);
