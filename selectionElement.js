@@ -72,9 +72,7 @@ function handleSearchCurrencyInput(inputElemet) {
         labelItemTxt.toUpperCase().indexOf(filter) > -1 ? item.parentElement.style.display = "" : item.parentElement.style.display = "none";
         item.parentElement.offsetWidth > 0 && item.parentElement.offsetHeight > 0 ? counter++ : counter--;
     });
-
     setVisibilityErrorSearch(counter == -52, inputElemet.parentElement)
-
 }
 
 function setVisibilityErrorSearch(isVisible, element) {
