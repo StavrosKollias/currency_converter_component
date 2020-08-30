@@ -13,6 +13,18 @@ html{
     font-family: Arial, Helvetica, sans-serif;
 }
 
+@media only screen and (min-width:600px){
+    html{
+        font-size: 16px;
+    }
+}
+
+@media only screen and (min-width:800px){
+    html{
+        font-size: 18px;
+    }
+}
+
 body{
     margin:0;
 }
@@ -30,7 +42,7 @@ body{
     align-items: center;
     justify-content: space-evenly;
     border-radius: 0.8rem;
-    box-shadow: 0 0 0.2rem var(--black);
+    box-shadow: 0 0 0.8rem var(--black);
 }
 
 .input-container{
