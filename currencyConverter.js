@@ -21,17 +21,27 @@ async function generateCurrencyComponent() {
     convertButton.disabled = true;
     const errorMsg = createHTMLElement("p", "error-msg", "error-msg", "Invalid Amount", "");
     const resultMsg = createHTMLElement("p", "result-converter", "result-converter", "", "");
+    const timeContainer = createHTMLElement("div", "", "counter-container", "", "");
+    const minutesContainer = createHTMLElement("div", "minutes-container", "time-container", "", "")
+    const minutesDisplay = createHTMLElement("span", "minutes-display", "time", "", "", "", "");
+    const secondsContainer = createHTMLElement("div", "seconds-container", "time-container", "", "");
+    const secondsDisplay = createHTMLElement("span", "seconds-display", "time", "", "");
+    minutesContainer.appendChild(minutesDisplay);
+    secondsContainer.appendChild(secondsDisplay);
+    timeContainer.appendChild(minutesContainer);
+    timeContainer.appendChild(secondsContainer);
     currencyComponent.appendChild(inputContainer);
     currencyComponent.appendChild(selectCurrency);
     currencyComponent.appendChild(selectCurrencyConvert);
     currencyComponent.appendChild(errorMsg);
     currencyComponent.appendChild(resultMsg);
+    currencyComponent.appendChild(timeContainer);
     currencyComponent.appendChild(convertButton);
     loopThroughObjectDataForSelections(data.rates, addOptionToSelectMenu);
     selectCurrencyConvert.selectedIndex = 3;
     handleInput(inputAmount)
 }
-
+var expiryTimer;
 generateCurrencyComponent();
 
 async function handleConvertButton() {
@@ -45,8 +55,9 @@ async function handleConvertButton() {
         const data = await getApiData("https://api.exchangerate-api.com/v4/latest/GBP");
         var toGB = 1 / data.rates[selectedCurency1];
         var convertedValue = Number(inputAmountValue) * data.rates[selectedCurency2] * toGB;
-        console.log(convertedValue);
-        resultCoverter.innerText = inputAmountValue + " " + selectedCurency1 + " is equivalent to " + convertedValue + " " + selectedCurency2
+        resultCoverter.innerText = inputAmountValue + " " + selectedCurency1 + " is equivalent to " + convertedValue + " " + selectedCurency2;
+        startExpiryTimer(10, 0);
+        document.querySelector(".counter-container").style.display = "block";
     }
 }
 
@@ -101,4 +112,31 @@ function createHTMLElement(type, id, className, innerText, innerHTML) {
     if (innerText) element.innerText = innerText;
     if (innerHTML) element.innerHTML = innerHTML;
     return element;
+}
+
+function startExpiryTimer(minutes, seconds) {
+    counterMinutes = 0;
+    counterSeconds = 0;
+    const minutesElement = document.querySelector("#minutes-display");
+    const secondsElement = document.querySelector("#seconds-display");
+    console.log(minutes + "'" + ":" + seconds + '"');
+    expiryTimer = setInterval(() => {
+        if (minutesElement.innerText != minutes + "'") minutesElement.style.transform = `translate(-50%,-50%) rotate(${180 * counterMinutes}deg) scale(${Math.pow(-1, counterSeconds)},${Math.pow(-1, counterSeconds)}) `;
+        if (secondsElement.innerText != seconds + '"') secondsElement.style.transform = `translate(-50%,-50%) rotate(${180 * counterSeconds}deg) scale(${Math.pow(-1, counterSeconds)},${Math.pow(-1, counterSeconds)})`;
+        minutesElement.innerText = minutes + "'";
+        secondsElement.innerText = seconds + '"';
+
+        counterSeconds++;
+        if (seconds == 0) {
+            if (minutes == 0) {
+                clearInterval(expiryTimer);
+                document.querySelector(".counter-container").style.display = "none";
+            };
+            minutes--;
+            seconds = 59;
+            counterMinutes++;
+        } else {
+            seconds--;
+        }
+    }, 1000);
 }
