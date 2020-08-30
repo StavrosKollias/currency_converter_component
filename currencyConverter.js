@@ -9,7 +9,7 @@ async function generateCurrencyComponent() {
     inputAmount.value = "100";
     inputAmount.addEventListener("input", (e) => {
         handleInput(e.target);
-    })
+    });
     inputContainer.appendChild(buttonReverse);
     inputContainer.appendChild(label);
     inputContainer.appendChild(inputAmount);
@@ -52,6 +52,7 @@ async function handleConvertButton() {
     const inputAmountValue = document.getElementById("input-amount").value;
     const resultCoverter = document.querySelector(".result-converter");
     if (!isNaN(inputAmountValue)) {
+        clearInterval(expiryTimer);
         const data = await getApiData("https://api.exchangerate-api.com/v4/latest/GBP");
         var toGB = 1 / data.rates[selectedCurency1];
         var convertedValue = Number(inputAmountValue) * data.rates[selectedCurency2] * toGB;

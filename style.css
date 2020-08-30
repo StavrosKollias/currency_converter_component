@@ -130,6 +130,7 @@ body{
 .result-converter{
     color: var(--blue);
     font-weight: bold;
+    margin: 0;
 }
 
 .counter-container{
