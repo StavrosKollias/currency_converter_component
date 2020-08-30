@@ -147,9 +147,9 @@ body{
     opacity: 0;
     margin: 0;
     bottom: -2rem;
-    width: 50%;
+    width: 80%;
     color: var(--red);
-    word-break: break-all;
+    word-break: break-word;
     transform: translateY(-4rem);
     transition: all 0.45s ease-in-out;
 }
@@ -280,8 +280,8 @@ body{
         right: 0;
         z-index: 9;
         display: none;
-        max-height:  calc(20rem - 2 * 1rem);
-        min-height: calc(15rem - 2 * 1rem);
+        max-height:  calc(18rem);
+        min-height: calc(17rem);
     }
 }
 
@@ -289,6 +289,7 @@ body{
 .select-container .currency-list-select li{
     position: relative;
     color: gray; 
+    
 }
 
 .select-container .currency-list-select .item-currency-select{
@@ -308,6 +309,7 @@ body{
     align-items: center;
     padding: 0.3rem;
     border-radius: 0.5rem;
+    font-size: 1rem;
     transition: all var(--transitionTime) ease-in-out;
 }
 
@@ -343,6 +345,7 @@ body{
 
 .select-container .currency-list-select .seach-currency-container .error-message-search{
     color: var(--red);
+    font-size: 1rem;
     position: absolute;
     left: 50%;
     bottom: -2rem;
@@ -356,10 +359,12 @@ body{
     width: calc(100% - 2 * 0.5rem);
     padding: 0.5rem;
     border: none;
+    font-size: 1rem;
 }
 
 .select-container .currency-list-select .seach-currency-container i{
     color: var(--lightGray);
+    font-size: 1rem;
 }
 
 .select-container .currency-list-select .search-currency-input:focus{

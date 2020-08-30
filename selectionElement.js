@@ -81,8 +81,10 @@ function setVisibilityErrorSearch(isVisible, element) {
     const errorMessage = element.querySelector(".error-message-search");
     if (isVisible) {
         errorMessage.style.opacity = "1";
+        element.style.borderBottom = "1px solid #fa1818";
     } else {
         errorMessage.style.opacity = "0";
+        element.style.borderBottom = "1px solid #a1a1a1";
     };
 }
 
