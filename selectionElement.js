@@ -1,10 +1,11 @@
 function generateSelectionElement(rates, selectedCurrency, selectId, inputSearchId, listId) {
-    const selectionContainer = createHTMLElement("button", selectId, "selection-container", null, null,);
+    const selectionContainer = createHTMLElement("button", selectId, "select-container", null, null,);
     const imgCurrency = createHTMLElement("img", null, "select-currency-flag-img", null, null);
     imgCurrency.src = "https://www.countryflags.io/gb/flat/64.png";
     const spanLabel = createHTMLElement("span", null, "select-currency-label", "Option 1", null,);
     const listCurrenciesContainer = createHTMLElement("ul", listId, "currency-list-select", null, null,);
     const liSearchContainer = createHTMLElement("li", "seach-currency-container", "seach-currency-container", null, null,);
+    const errorMessageSearch = createHTMLElement("span", null, "error-message-search", "No currencies found", null);
     const searchCurrencyInput = createHTMLElement("input", inputSearchId, "search-currency-input", null, null);
     searchCurrencyInput.placeholder = "Search Currency";
     searchCurrencyInput.addEventListener("input", (e) => { handleSearchCurrencyInput(e.target); });
@@ -12,6 +13,7 @@ function generateSelectionElement(rates, selectedCurrency, selectId, inputSearch
     const iElementSearch = createHTMLElement("i", null, "fas fa-search", null, null);
     liSearchContainer.appendChild(iElementSearch);
     liSearchContainer.appendChild(searchCurrencyInput);
+    liSearchContainer.appendChild(errorMessageSearch);
     selectionContainer.appendChild(imgCurrency);
     selectionContainer.appendChild(spanLabel);
     selectionContainer.appendChild(iElementArrowDown);
@@ -50,8 +52,8 @@ function addListItemToSelectionList(selectionList, value) {
 function handleSelectionButtonClick(event) {
     const currencyComponent = getCurrencyComponent();
     var button = event.target;
-    if (button.className != "selection-container") button = event.target.parentElement;
-    if (button.className != "selection-container") return;
+    if (button.className != "select-container") button = event.target.parentElement;
+    if (button.className != "select-container") return;
     const activeList = currencyComponent.querySelector(".active-panel");
     if (activeList) activeList.classList.remove("active-panel");
     const listOfCurrencies = button.children[3];
@@ -59,16 +61,29 @@ function handleSelectionButtonClick(event) {
     listOfCurrencies.children[0].children[1].focus();
 }
 
-
 function handleSearchCurrencyInput(inputElemet) {
     const listElement = inputElemet.parentElement.parentElement;
     const filter = inputElemet.value.toUpperCase();
-    const listItems = listElement.querySelectorAll(".select-item-currency-btn");
+    const listItems = listElement.querySelectorAll(".item-currency-select-btn");
+    counter = 0;
     listItems.forEach((item) => {
         const labelItem = item.children[1];
         const labelItemTxt = labelItem.textContent || labelItem.innerText;
-        labelItemTxt.toUpperCase().indexOf(filter) > -1 ? item.parentElement.style.display = null : item.parentElement.style.display = "none";
+        labelItemTxt.toUpperCase().indexOf(filter) > -1 ? item.parentElement.style.display = "" : item.parentElement.style.display = "none";
+        item.parentElement.offsetWidth > 0 && item.parentElement.offsetHeight > 0 ? counter++ : counter--;
     });
+
+    setVisibilityErrorSearch(counter == -52, inputElemet.parentElement)
+
+}
+
+function setVisibilityErrorSearch(isVisible, element) {
+    const errorMessage = element.querySelector(".error-message-search");
+    if (isVisible) {
+        errorMessage.style.opacity = "1";
+    } else {
+        errorMessage.style.opacity = "0";
+    };
 }
 
 function handleSelectionItemClick(event) {
@@ -83,3 +98,22 @@ function handleSelectionItemClick(event) {
     const activeList = currencyComponent.querySelector(".active-panel");
     if (activeList) activeList.classList.remove("active-panel");
 }
+
+function handleClickWindow(event) {
+    const currencyComponent = getCurrencyComponent();
+    if (event.target.className != "select-container" && event.target.parentElement.className != "select-container" && event.target.className != "search-currency-input" && event.target.parentElement.className != "select-seach-currency") {
+        const listsOfCurrencies = currencyComponent.querySelectorAll("ul");
+        listsOfCurrencies.forEach((item, i) => {
+            item.classList.remove("active-panel");
+            currencyComponent.querySelectorAll(".search-currency-input")[i].value = "";
+            currencyComponent.querySelectorAll(".search-currency-input")[i].querySelectorAll(".item-currency-select-btn").forEach((item, i) => {
+                item.parentElement.style.display = "";
+            });
+
+        });
+    }
+}
+
+window.addEventListener("click", (event) => {
+    handleClickWindow(event);
+});

@@ -20,16 +20,16 @@ async function generateCurrencyComponent() {
     inputAmount.addEventListener("input", (e) => {
         hadleAmountInput(e.target);
     });
-    inputContainer.appendChild(buttonReverse);
     inputContainer.appendChild(label);
     inputContainer.appendChild(inputAmount);
-    const rates = await getExchangeRatesFromApi("GBP");
-    const selectCurrency = generateSelectionElement(rates, 1, "curency-amount-select", "search-currency-input-amount", "currency-amount-list");
-    const selectCurrencyConvert = generateSelectionElement(rates, 3, "curency-convert-select", "search-currency-input-convert", "currency-convert-list");
+    inputContainer.appendChild(buttonReverse);
+    const data = await getExchangeRatesFromApi("GBP");
+    const selectCurrency = generateSelectionElement(data.rates, 1, "curency-amount-select", "search-currency-input-amount", "currency-amount-list");
+    const selectCurrencyConvert = generateSelectionElement(data.rates, 4, "curency-convert-select", "search-currency-input-convert", "currency-convert-list");
     const convertButton = createHTMLElement("button", "convert-btn", "convert-btn", "Convert", null);
     convertButton.addEventListener("click", handleConvertButtonClick);
     convertButton.disabled = true;
-    const errorMsg = createHTMLElement("p", "error-msg", "error-msg", "Invalid Amount", null);
+    const errorMsg = createHTMLElement("p", "error-msg", "error-msg", null, null);
     const resultMsg = createHTMLElement("p", "result-converter", "result-converter", null, null);
     const timeContainer = createHTMLElement("div", null, "counter-container", null, null);
     const textContainer = createHTMLElement("div", "time-text-container", "time-container", null, null);
@@ -60,14 +60,14 @@ generateCurrencyComponent();
 
 async function handleConvertButtonClick() {
     const currencyComponent = getCurrencyComponent();
-    const selectedCurency1 = currencyComponent.getElementById("curency-amount-select").children[1].innerText;
-    const selectedCurency2 = currencyComponent.getElementById("curency-convert-select").children[1].innerText;
-    const inputAmountValue = currencyComponent.getElementById("input-amount").value;
+    const selectedCurency1 = currencyComponent.querySelector("#curency-amount-select").children[1].innerText;
+    const selectedCurency2 = currencyComponent.querySelector("#curency-convert-select").children[1].innerText;
+    const inputAmountValue = currencyComponent.querySelector("#input-amount").value;
     const resultCoverter = currencyComponent.querySelector(".result-converter");
     clearInterval(expiryTimer);
-    const rates = await getExchangeRatesFromApi(selectedCurency1);
-    var convertedValue = Number(inputAmountValue) * rates[selectedCurency2];
-    resultCoverter.innerText = inputAmountValue + " " + selectedCurency1 + " is equivalent to " + convertedValue + " " + selectedCurency2;
+    const data = await getExchangeRatesFromApi(selectedCurency1);
+    var convertedValue = Number(inputAmountValue) * data.rates[selectedCurency2];
+    resultCoverter.innerText = inputAmountValue + " " + selectedCurency1 + " is equivalent to " + convertedValue.toFixed(4) + " " + selectedCurency2;
     startExpiryTimer(10, 0);
     updateTimeElements(0, 10, 0, 0);
     document.querySelector(".counter-container").style.display = "block";
@@ -77,12 +77,20 @@ function hadleAmountInput(element) {
     const value = element.value;
     const convertButton = document.querySelector(".convert-btn");
     value && !isNaN(value) ? convertButton.disabled = false : convertButton.disabled = true;
-    setErrorMessageVisibility(isNaN(value));
+    setErrorMessageVisibility(isNaN(value), value, element);
 }
 
-function setErrorMessageVisibility(isVisible) {
+function setErrorMessageVisibility(isVisible, value, inputElement) {
     const errorMsg = document.querySelector(".error-msg");
-    isVisible ? errorMsg.style.display = "block" : errorMsg.style.display = "none";
+    if (isVisible) {
+        inputElement.style.borderBottom = "0.15rem solid #fa1818";
+        errorMsg.innerText = `${value} is not a valid amount`;
+        errorMsg.classList.add("active-error");
+    } else {
+        errorMsg.innerText = "";
+        errorMsg.classList.remove("active-error");
+        inputElement.style.borderBottom = "0.15rem solid #32589e";
+    }
 }
 
 function handleSwitchCurrenciesButtonClick() {
@@ -105,7 +113,7 @@ async function getExchangeRatesFromApi(currency) {
     var response = await fetch(`https://api.exchangerate-api.com/v4/latest/${currency}`);
     if (response.ok) {
         let json = await response.json();
-        return json.rates;
+        return { rates: json.rates, time: json.time_last_updated };
     } else {
         alert("HTTP Request Error: " + response.status);
         return {};
