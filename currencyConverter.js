@@ -24,8 +24,10 @@ async function generateCurrencyComponent() {
     inputContainer.appendChild(inputAmount);
     inputContainer.appendChild(buttonReverse);
     const rates = await getExchangeRatesFromApi("GBP");
-    const selectCurrency = generateSelectionElement(rates, 1, "curency-amount-select", "search-currency-input-amount", "currency-amount-list");
-    const selectCurrencyConvert = generateSelectionElement(rates, 4, "curency-convert-select", "search-currency-input-convert", "currency-convert-list");
+    const currencyNames = await getCurrencyNamesFromApi();
+
+    const selectCurrency = generateSelectionElement(rates, currencyNames, 1, "curency-amount-select", "search-currency-input-amount", "currency-amount-list");
+    const selectCurrencyConvert = generateSelectionElement(rates, currencyNames, 4, "curency-convert-select", "search-currency-input-convert", "currency-convert-list");
     const convertButton = createHTMLElement("button", "convert-button", "convert-button", "Convert", null);
     convertButton.addEventListener("click", handleConvertButtonClick);
     convertButton.disabled = true;
@@ -68,7 +70,6 @@ async function handleConvertButtonClick() {
     const rates = await getExchangeRatesFromApi(selectedCurency1);
     var convertedValue = Number(inputAmountValue) * rates[selectedCurency2];
     resultCoverter.innerText = inputAmountValue + " " + selectedCurency1 + " is equivalent to " + convertedValue.toFixed(4) + " " + selectedCurency2;
-
     startExpiryTimer(10, 0);
     updateTimeElements(0, 10, 0, 0);
     resultCoverter.classList.add("active-result");
@@ -121,6 +122,18 @@ async function getExchangeRatesFromApi(currency) {
         return {};
     }
 }
+
+async function getCurrencyNamesFromApi() {
+    var response = await fetch(`https://openexchangerates.org/api/currencies.json`);
+    if (response.ok) {
+        let json = await response.json();
+        return json;
+    } else {
+        alert("HTTP Request Error: " + response.status);
+        return {};
+    }
+}
+
 
 function createHTMLElement(type, id, className, innerText, innerHTML) {
     const element = document.createElement(type);
