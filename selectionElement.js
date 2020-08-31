@@ -35,7 +35,7 @@ function addListItemsForToSelection(rates, selectionList) {
 
 function addListItemToSelectionList(selectionList, value) {
     const liItemContainer = createHTMLElement("li", null, "item-currency-select", null, null, null);
-    const button = createHTMLElement("button", null, `item-currency-select-btn ${value}`, null, null, null);
+    const button = createHTMLElement("button", null, `item-currency-select-button ${value}`, null, null, null);
     const imgItemCurrency = createHTMLElement("img", null, "item-currency-flag-img", null, null, null);
     const flagType = value.substring(0, value.length - 1).toLowerCase();
     imgItemCurrency.src = `https://www.countryflags.io/${flagType}/flat/64.png`;
@@ -64,7 +64,7 @@ function handleSelectionButtonClick(event) {
 function handleSearchCurrencyInput(inputElemet) {
     const listElement = inputElemet.parentElement.parentElement;
     const filter = inputElemet.value.toUpperCase();
-    const listItems = listElement.querySelectorAll(".item-currency-select-btn");
+    const listItems = listElement.querySelectorAll(".item-currency-select-button");
     counter = 0;
     listItems.forEach((item) => {
         const labelItem = item.children[1];
@@ -89,7 +89,7 @@ function setVisibilityErrorSearch(isVisible, element) {
 function handleSelectionItemClick(event) {
     const currencyComponent = getCurrencyComponent();
     var listItem = event.target;
-    if (listItem.classList[0] != "item-currency-select-btn") listItem = event.target.parentElement;
+    if (listItem.classList[0] != "item-currency-select-button") listItem = event.target.parentElement;
     const activeItem = listItem.parentElement.parentElement.querySelector(".selected-currency");
     activeItem.classList.remove("selected-currency");
     listItem.classList.add("selected-currency");
@@ -106,7 +106,7 @@ function handleClickWindow(event) {
         listsOfCurrencies.forEach((item, i) => {
             item.classList.remove("active-panel");
             currencyComponent.querySelectorAll(".search-currency-input")[i].value = "";
-            currencyComponent.querySelectorAll(".search-currency-input")[i].querySelectorAll(".item-currency-select-btn").forEach((item, i) => {
+            currencyComponent.querySelectorAll(".search-currency-input")[i].querySelectorAll(".item-currency-select-button").forEach((item, i) => {
                 item.parentElement.style.display = "";
             });
 

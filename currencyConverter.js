@@ -11,7 +11,7 @@ function getCurrencyComponent() {
 async function generateCurrencyComponent() {
     const currencyComponent = getCurrencyComponent();
     const inputContainer = createHTMLElement("div", null, "input-container", null, null);
-    const buttonReverse = createHTMLElement("button", "reverse-btn", "reverse-btn", null, '<i class="fas fa-exchange-alt"></i>');
+    const buttonReverse = createHTMLElement("button", "reverse-button", "reverse-button", null, '<i class="fas fa-exchange-alt"></i>');
     buttonReverse.addEventListener("click", () => { handleSwitchCurrenciesButtonClick(currencyComponent) });
     const label = createHTMLElement("label", "input-label", "input-label", "Amount", null);
     const inputAmount = createHTMLElement("input", "input-amount", "currency-input", null, null);
@@ -26,7 +26,7 @@ async function generateCurrencyComponent() {
     const rates = await getExchangeRatesFromApi("GBP");
     const selectCurrency = generateSelectionElement(rates, 1, "curency-amount-select", "search-currency-input-amount", "currency-amount-list");
     const selectCurrencyConvert = generateSelectionElement(rates, 4, "curency-convert-select", "search-currency-input-convert", "currency-convert-list");
-    const convertButton = createHTMLElement("button", "convert-btn", "convert-btn", "Convert", null);
+    const convertButton = createHTMLElement("button", "convert-button", "convert-button", "Convert", null);
     convertButton.addEventListener("click", handleConvertButtonClick);
     convertButton.disabled = true;
     const errorMsg = createHTMLElement("p", "error-msg", "error-msg", null, null);
@@ -68,14 +68,16 @@ async function handleConvertButtonClick() {
     const rates = await getExchangeRatesFromApi(selectedCurency1);
     var convertedValue = Number(inputAmountValue) * rates[selectedCurency2];
     resultCoverter.innerText = inputAmountValue + " " + selectedCurency1 + " is equivalent to " + convertedValue.toFixed(4) + " " + selectedCurency2;
+
     startExpiryTimer(10, 0);
     updateTimeElements(0, 10, 0, 0);
-    document.querySelector(".counter-container").style.display = "block";
+    resultCoverter.classList.add("active-result");
+    document.querySelector(".counter-container").classList.add("actiove-timer");
 }
 
 function hadleAmountInput(element) {
     const value = element.value;
-    const convertButton = document.querySelector(".convert-btn");
+    const convertButton = document.querySelector(".convert-button");
     value && !isNaN(value) ? convertButton.disabled = false : convertButton.disabled = true;
     setErrorMessageVisibility(isNaN(value), value, element);
 }
@@ -140,8 +142,8 @@ function startExpiryTimer(minutes, seconds) {
         if (seconds == 0) {
             if (minutes == 0) {
                 clearInterval(expiryTimer);
-                currencyComponent.querySelector(".counter-container").style.display = "none";
-                currencyComponent.querySelector("#result-converter").style.display = "none";
+                currencyComponent.querySelector(".counter-container").classList.remove("actiove-timer");
+                currencyComponent.querySelector("#result-converter").classList.remove("active-result");
             };
             minutes--;
             seconds = 59;
