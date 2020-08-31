@@ -1,5 +1,5 @@
 function getCurrencyComponent() {
-    const component = document.getElementById("curency-component");
+    const component = document.getElementById("currency-component");
     if (component) {
         return component;
     } else {
@@ -27,8 +27,8 @@ async function generateCurrencyComponent() {
     const rates = await getExchangeRatesFromApi("GBP");
     const currencyNames = await getCurrencyNamesFromApi();
     // generateSelectionElement(rates, currencyNames, selectedCurrency, selectId, inputSearchId, listId)
-    const selectCurrency = generateSelectionElement(rates, currencyNames, 1, "curency-amount-select", "search-currency-input-amount", "currency-amount-list");
-    const selectCurrencyConvert = generateSelectionElement(rates, currencyNames, 4, "curency-convert-select", "search-currency-input-convert", "currency-convert-list");
+    const selectCurrency = generateSelectionElement(rates, currencyNames, 1, "currency-amount-select", "search-currency-input-amount", "currency-amount-list");
+    const selectCurrencyConvert = generateSelectionElement(rates, currencyNames, 4, "currency-convert-select", "search-currency-input-convert", "currency-convert-list");
     const convertButton = createHTMLElement("button", "convert-button", "convert-button", "Convert", null);
     convertButton.addEventListener("click", handleConvertButtonClick);
     convertButton.disabled = true;
@@ -63,14 +63,14 @@ generateCurrencyComponent();
 
 async function handleConvertButtonClick() {
     const currencyComponent = getCurrencyComponent();
-    const selectedCurency1 = currencyComponent.querySelector("#curency-amount-select").children[1].innerText;
-    const selectedCurency2 = currencyComponent.querySelector("#curency-convert-select").children[1].innerText;
+    const selectedCurrency1 = currencyComponent.querySelector("#currency-amount-select").children[1].innerText;
+    const selectedCurrency2 = currencyComponent.querySelector("#currency-convert-select").children[1].innerText;
     const inputAmountValue = currencyComponent.querySelector("#input-amount").value;
     const resultCoverter = currencyComponent.querySelector(".result-converter");
     clearInterval(expiryTimer);
-    const rates = await getExchangeRatesFromApi(selectedCurency1);
-    var convertedValue = Number(inputAmountValue) * rates[selectedCurency2];
-    resultCoverter.innerText = inputAmountValue + " " + selectedCurency1 + " is equivalent to " + convertedValue.toFixed(4) + " " + selectedCurency2;
+    const rates = await getExchangeRatesFromApi(selectedCurrency1);
+    var convertedValue = Number(inputAmountValue) * rates[selectedCurrency2];
+    resultCoverter.innerText = inputAmountValue + " " + selectedCurrency1 + " is equivalent to " + convertedValue.toFixed(4) + " " + selectedCurrency2;
     startExpiryTimer(10, 0);
     updateTimeElements(0, 10, 0, 0);
     resultCoverter.classList.add("active-result");
@@ -99,18 +99,18 @@ function setErrorMessageVisibility(isVisible, value, inputElement) {
 
 function handleSwitchCurrenciesButtonClick() {
     const currencyComponent = getCurrencyComponent();
-    const selectedCurency1 = currencyComponent.querySelector("#curency-amount-select");
-    const activeSelection = selectedCurency1.querySelector(".selected-currency");
+    const selectedCurrency1 = currencyComponent.querySelector("#currency-amount-select");
+    const activeSelection = selectedCurrency1.querySelector(".selected-currency");
     activeSelection.classList.remove("selected-currency");
-    const selectedCurency2 = currencyComponent.querySelector("#curency-convert-select");
-    const activeSelection2 = selectedCurency2.querySelector(".selected-currency");
+    const selectedCurrency2 = currencyComponent.querySelector("#currency-convert-select");
+    const activeSelection2 = selectedCurrency2.querySelector(".selected-currency");
     activeSelection2.classList.remove("selected-currency");
-    selectedCurency1.children[0].src = activeSelection2.children[0].src;
-    selectedCurency1.children[1].innerText = activeSelection2.children[1].innerText;
-    selectedCurency1.querySelector(`.${activeSelection2.children[1].innerText}`).classList.add("selected-currency");
-    selectedCurency2.children[0].src = activeSelection.children[0].src;
-    selectedCurency2.children[1].innerText = activeSelection.children[1].innerText;
-    selectedCurency2.querySelector(`.${activeSelection.children[1].innerText}`).classList.add("selected-currency");
+    selectedCurrency1.children[0].src = activeSelection2.children[0].src;
+    selectedCurrency1.children[1].innerText = activeSelection2.children[1].innerText;
+    selectedCurrency1.querySelector(`.${activeSelection2.children[1].innerText}`).classList.add("selected-currency");
+    selectedCurrency2.children[0].src = activeSelection.children[0].src;
+    selectedCurrency2.children[1].innerText = activeSelection.children[1].innerText;
+    selectedCurrency2.querySelector(`.${activeSelection.children[1].innerText}`).classList.add("selected-currency");
 }
 
 async function getExchangeRatesFromApi(currency) {
