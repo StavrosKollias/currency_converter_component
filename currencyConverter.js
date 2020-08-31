@@ -31,17 +31,16 @@ async function generateCurrencyComponent() {
     const selectCurrencyConvert = generateSelectionElement(rates, currencyNames, 4, "currency-convert-select", "search-currency-input-convert", "currency-convert-list");
     const convertButton = createHTMLElement("button", "convert-button", "convert-button", "Convert", null);
     convertButton.addEventListener("click", handleConvertButtonClick);
-    convertButton.disabled = true;
-    const errorMsg = createHTMLElement("p", "error-msg", "error-msg", null, null);
-    const resultMsg = createHTMLElement("p", "result-converter", "result-converter", null, null);
+    const errorMessage = createHTMLElement("p", "error-msg", "error-msg", null, null);
+    const resultMessage = createHTMLElement("p", "result-converter", "result-converter", null, null);
     const timeContainer = createHTMLElement("div", null, "counter-container", null, null);
-    const textContainer = createHTMLElement("div", "time-text-container", "time-container", null, null);
-    const textDisplay = createHTMLElement("span", "text-display", "time", "Expires in: ", null, null, null);
+    const textContainer = createHTMLElement("div", "text-time-container", "time-container", null, null);
+    const textTimeDisplay = createHTMLElement("span", "text-time-display", "time", "Expires in: ", null, null, null);
     const minutesContainer = createHTMLElement("div", "minutes-container", "time-container", null, null);
     const minutesDisplay = createHTMLElement("span", "minutes-display", "time", null, null, null, null);
     const secondsContainer = createHTMLElement("div", "seconds-container", "time-container", null, null);
     const secondsDisplay = createHTMLElement("span", "seconds-display", "time", null, null);
-    textContainer.appendChild(textDisplay);
+    textContainer.appendChild(textTimeDisplay);
     minutesContainer.appendChild(minutesDisplay);
     secondsContainer.appendChild(secondsDisplay);
     timeContainer.appendChild(textContainer);
@@ -50,12 +49,11 @@ async function generateCurrencyComponent() {
     currencyComponent.appendChild(inputContainer);
     currencyComponent.appendChild(selectCurrency);
     currencyComponent.appendChild(selectCurrencyConvert);
-    currencyComponent.appendChild(errorMsg);
-    currencyComponent.appendChild(resultMsg);
+    currencyComponent.appendChild(errorMessage);
+    currencyComponent.appendChild(resultMessage);
     currencyComponent.appendChild(timeContainer);
     currencyComponent.appendChild(convertButton);
-    selectCurrencyConvert.selectedIndex = 3;
-    hadleAmountInput(inputAmount);
+    inputAmount.focus();
 }
 
 var expiryTimer;
@@ -85,20 +83,20 @@ function hadleAmountInput(element) {
 }
 
 function setErrorMessageVisibility(isVisible, value, inputElement) {
-    const errorMsg = document.querySelector(".error-msg");
+    const errorMessage = document.querySelector(".error-msg");
     if (isVisible) {
         inputElement.style.borderBottom = "0.15rem solid #fa1818";
-        errorMsg.innerText = `${value} is not a valid amount`;
-        errorMsg.classList.add("active-error");
+        errorMessage.innerText = `${value} is not a valid number`;
+        errorMessage.classList.add("active-error");
     } else {
         if (value) {
-            errorMsg.classList.remove("active-error");
+            errorMessage.classList.remove("active-error");
             inputElement.style.borderBottom = "0.15rem solid #32589e";
-            errorMsg.innerText = "";
+            errorMessage.innerText = "";
         } else {
             inputElement.style.borderBottom = "0.15rem solid #fa1818";
-            errorMsg.classList.add("active-error");
-            errorMsg.innerText = "Field Reuires Amount";
+            errorMessage.classList.add("active-error");
+            errorMessage.innerText = "Reuired Amount";
 
         }
 
