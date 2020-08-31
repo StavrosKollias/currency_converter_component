@@ -85,16 +85,16 @@ function hadleAmountInput(element) {
 function setErrorMessageVisibility(isVisible, value, inputElement) {
     const errorMessage = document.querySelector(".error-msg");
     if (isVisible) {
-        inputElement.style.borderBottom = "0.15rem solid #fa1818";
+        inputElement.classList.add("error-input");
         errorMessage.innerText = `${value} is not a valid number`;
         errorMessage.classList.add("active-error");
     } else {
         if (value) {
             errorMessage.classList.remove("active-error");
-            inputElement.style.borderBottom = "0.15rem solid #32589e";
+            inputElement.classList.remove("error-input");
             errorMessage.innerText = "";
         } else {
-            inputElement.style.borderBottom = "0.15rem solid #fa1818";
+            inputElement.classList.add("error-input");
             errorMessage.classList.add("active-error");
             errorMessage.innerText = "Reuired Amount";
 

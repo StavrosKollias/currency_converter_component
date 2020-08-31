@@ -65,7 +65,8 @@ function handleSelectionButtonClick(event) {
     const listOfCurrencies = button.children[4];
     listOfCurrencies.classList.add("active-panel");
     listOfCurrencies.children[0].children[1].focus();
-    document.querySelector("html").classList.add("overflow-hidden");
+    window.innerHeight < 400 && window.innerWidth > 600 ?
+        document.querySelector("html").classList.remove("overflow-hidden") : document.querySelector("html").classList.add("overflow-hidden");
 }
 
 function handleSearchCurrencyInput(inputElemet) {
@@ -112,24 +113,34 @@ function handleSelectionItemClick(event) {
 }
 
 function handleClickWindow(event) {
-    const currencyComponent = getCurrencyComponent();
     if (event.target.className != "select-container" && event.target.parentElement.className != "select-container" && event.target.className != "search-currency-input" && event.target.parentElement.className != "select-seach-currency") {
-        const listsOfCurrencies = currencyComponent.querySelectorAll("ul");
-        listsOfCurrencies.forEach((item, i) => {
-            item.classList.remove("active-panel");
-            document.querySelector("html").classList.remove("overflow-hidden");
-            currencyComponent.querySelectorAll(".search-currency-input")[i].value = "";
-            listsOfCurrencies[i].querySelectorAll(".item-currency-select-button").forEach((item, i) => {
-                item.parentElement.style.display = "";
-            });
-
-        });
+        closeActiveSelectionMenu();
     }
+}
+
+function closeActiveSelectionMenu() {
+    const currencyComponent = getCurrencyComponent();
+    const listsOfCurrencies = currencyComponent.querySelectorAll("ul");
+    listsOfCurrencies.forEach((item, i) => {
+        item.classList.remove("active-panel");
+        document.querySelector("html").classList.remove("overflow-hidden");
+        currencyComponent.querySelectorAll(".search-currency-input")[i].value = "";
+        listsOfCurrencies[i].querySelectorAll(".item-currency-select-button").forEach((item, i) => {
+            item.parentElement.style.display = "";
+        });
+
+    });
 }
 
 window.addEventListener("click", (event) => {
     handleClickWindow(event);
 });
+
+window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" || event.key === 27) { // escape key maps to keycode `27`
+        closeActiveSelectionMenu();
+    }
+})
 
 
 

@@ -34,7 +34,7 @@ body{
     margin:0;
     padding: 1rem;
     width: calc(100% - 2 * 1rem);
-    min-height: calc(100vh);
+    min-height: calc(100vh - 2 * 1rem);
 }
 
 .overflow-hidden{
@@ -109,6 +109,10 @@ body{
     color: var(--blue);
     caret-color: var(--blue);
     transition: all 0.45s ease-in-out;
+}
+
+.error-input{
+    border-bottom: 0.15rem solid var(--red);
 }
 
 .currency-input:focus{
@@ -257,6 +261,7 @@ body{
     color: var(--blue);
     padding: 0.5rem;
     background-color: var(--white); 
+    border-radius: 0.2rem;
 }
 
 .select-container:hover{
@@ -266,6 +271,7 @@ body{
 .select-container:focus{
     outline: none;
     font-weight: bold;
+    background-color: var(--transparentLightGreen);
 }
 
 .select-container .select-container:hover{
@@ -312,7 +318,7 @@ body{
     max-height: calc(100vh - 2rem);
 }
 
-@media only screen and (min-width: 600px){
+@media only screen and (min-width: 600px) {
     .select-container .currency-list-select{
         width: calc(100% - 2 * 1rem);
         position: absolute;
@@ -324,6 +330,20 @@ body{
         min-height: calc(17rem);
     }
 }
+
+/* @media only screen and (max-height: 490px){
+    .select-container .currency-list-select{
+        width: calc(100% - 2 * 1rem);
+        position: absolute;
+        top:0;
+        right: 0;
+        z-index: 9;
+        display: none;
+        max-height:  calc(18rem);
+        min-height: calc(17rem);
+    }
+} */
+
 
 .select-container .currency-list-select li{
     position: relative;
