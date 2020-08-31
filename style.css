@@ -153,7 +153,6 @@ body{
     padding: 1rem;
 }
 
-
 .currency-select:focus{
     outline: none;
     color: var(--blue);
@@ -282,7 +281,6 @@ body{
     display: block !important;
 }
 
-
 .select-container  .fa-angle-down{
     color: var(--lightBlue);
     position: absolute;
@@ -324,31 +322,14 @@ body{
         position: absolute;
         top:0;
         right: 0;
-        z-index: 9;
-        display: none;
         max-height:  calc(18rem);
         min-height: calc(17rem);
     }
 }
 
-/* @media only screen and (max-height: 490px){
-    .select-container .currency-list-select{
-        width: calc(100% - 2 * 1rem);
-        position: absolute;
-        top:0;
-        right: 0;
-        z-index: 9;
-        display: none;
-        max-height:  calc(18rem);
-        min-height: calc(17rem);
-    }
-} */
-
-
 .select-container .currency-list-select li{
     position: relative;
     color: gray; 
-    
 }
 
 .select-container .currency-list-select .item-currency-select{
@@ -411,7 +392,6 @@ body{
     color: var(--white) !important;
 }
 
-
 .select-container .currency-list-select .seach-currency-container{
     display: flex;
     align-items: center;
@@ -447,7 +427,6 @@ body{
 .select-container .currency-list-select .search-currency-input:focus{
     outline: none;
 }
-
 
 .select-container .currency-list-select li img{
     width: 1.8rem;
