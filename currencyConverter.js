@@ -135,7 +135,6 @@ function startExpiryTimer(minutes, seconds) {
     const currencyComponent = getCurrencyComponent();
     var counterMinutes = 0;
     var counterSeconds = 0;
-    console.log(minutes + "'" + ":" + seconds + '"');
     expiryTimer = setInterval(() => {
         updateTimeElements(counterMinutes, minutes, counterSeconds, seconds);
         counterSeconds++;
