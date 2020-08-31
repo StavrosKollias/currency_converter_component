@@ -23,9 +23,9 @@ async function generateCurrencyComponent() {
     inputContainer.appendChild(label);
     inputContainer.appendChild(inputAmount);
     inputContainer.appendChild(buttonReverse);
-    const data = await getExchangeRatesFromApi("GBP");
-    const selectCurrency = generateSelectionElement(data.rates, 1, "curency-amount-select", "search-currency-input-amount", "currency-amount-list");
-    const selectCurrencyConvert = generateSelectionElement(data.rates, 4, "curency-convert-select", "search-currency-input-convert", "currency-convert-list");
+    const rates = await getExchangeRatesFromApi("GBP");
+    const selectCurrency = generateSelectionElement(rates, 1, "curency-amount-select", "search-currency-input-amount", "currency-amount-list");
+    const selectCurrencyConvert = generateSelectionElement(rates, 4, "curency-convert-select", "search-currency-input-convert", "currency-convert-list");
     const convertButton = createHTMLElement("button", "convert-btn", "convert-btn", "Convert", null);
     convertButton.addEventListener("click", handleConvertButtonClick);
     convertButton.disabled = true;
@@ -65,8 +65,8 @@ async function handleConvertButtonClick() {
     const inputAmountValue = currencyComponent.querySelector("#input-amount").value;
     const resultCoverter = currencyComponent.querySelector(".result-converter");
     clearInterval(expiryTimer);
-    const data = await getExchangeRatesFromApi(selectedCurency1);
-    var convertedValue = Number(inputAmountValue) * data.rates[selectedCurency2];
+    const rates = await getExchangeRatesFromApi(selectedCurency1);
+    var convertedValue = Number(inputAmountValue) * rates[selectedCurency2];
     resultCoverter.innerText = inputAmountValue + " " + selectedCurency1 + " is equivalent to " + convertedValue.toFixed(4) + " " + selectedCurency2;
     startExpiryTimer(10, 0);
     updateTimeElements(0, 10, 0, 0);
@@ -113,7 +113,7 @@ async function getExchangeRatesFromApi(currency) {
     var response = await fetch(`https://api.exchangerate-api.com/v4/latest/${currency}`);
     if (response.ok) {
         let json = await response.json();
-        return { rates: json.rates, time: json.time_last_updated };
+        return json.rates;
     } else {
         alert("HTTP Request Error: " + response.status);
         return {};
