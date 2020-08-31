@@ -61,7 +61,6 @@ function handleSelectionButtonClick(event) {
     if (button.className != "select-container") button = event.target.parentElement;
     if (button.className != "select-container") return;
     const activeList = currencyComponent.querySelector(".active-panel");
-
     if (activeList) activeList.classList.remove("active-panel");
     const listOfCurrencies = button.children[4];
     listOfCurrencies.classList.add("active-panel");
@@ -82,7 +81,8 @@ function handleSearchCurrencyInput(inputElemet) {
         labelItemTxt.toUpperCase().indexOf(filter) > -1 || labelItem2Txt.toUpperCase().indexOf(filter) > -1 ? item.parentElement.style.display = "" : item.parentElement.style.display = "none";
         item.parentElement.offsetWidth > 0 && item.parentElement.offsetHeight > 0 ? counter++ : counter--;
     });
-    setVisibilityErrorSearch(counter == -52, inputElemet.parentElement)
+    const isVisible = counter == -listItems.length;
+    setVisibilityErrorSearch(isVisible, inputElemet.parentElement)
 }
 
 function setVisibilityErrorSearch(isVisible, element) {

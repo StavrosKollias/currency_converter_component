@@ -107,9 +107,11 @@ function handleSwitchCurrenciesButtonClick() {
     activeSelection2.classList.remove("selected-currency");
     selectedCurrency1.children[0].src = activeSelection2.children[0].src;
     selectedCurrency1.children[1].innerText = activeSelection2.children[1].innerText;
+    selectedCurrency1.children[2].innerText = activeSelection2.children[2].innerText;
     selectedCurrency1.querySelector(`.${activeSelection2.children[1].innerText}`).classList.add("selected-currency");
     selectedCurrency2.children[0].src = activeSelection.children[0].src;
     selectedCurrency2.children[1].innerText = activeSelection.children[1].innerText;
+    selectedCurrency2.children[2].innerText = activeSelection.children[2].innerText;
     selectedCurrency2.querySelector(`.${activeSelection.children[1].innerText}`).classList.add("selected-currency");
 }
 
