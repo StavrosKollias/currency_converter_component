@@ -91,9 +91,17 @@ function setErrorMessageVisibility(isVisible, value, inputElement) {
         errorMsg.innerText = `${value} is not a valid amount`;
         errorMsg.classList.add("active-error");
     } else {
-        errorMsg.innerText = "";
-        errorMsg.classList.remove("active-error");
-        inputElement.style.borderBottom = "0.15rem solid #32589e";
+        if (value) {
+            errorMsg.classList.remove("active-error");
+            inputElement.style.borderBottom = "0.15rem solid #32589e";
+            errorMsg.innerText = "";
+        } else {
+            inputElement.style.borderBottom = "0.15rem solid #fa1818";
+            errorMsg.classList.add("active-error");
+            errorMsg.innerText = "Field Reuires Amount";
+
+        }
+
     }
 }
 
