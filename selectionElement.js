@@ -61,15 +61,17 @@ function handleSelectionButtonClick(event) {
     if (button.className != "select-container") button = event.target.parentElement;
     if (button.className != "select-container") return;
     const activeList = currencyComponent.querySelector(".active-panel");
+
     if (activeList) activeList.classList.remove("active-panel");
     const listOfCurrencies = button.children[4];
     listOfCurrencies.classList.add("active-panel");
     listOfCurrencies.children[0].children[1].focus();
+    document.querySelector("html").classList.add("overflow-hidden");
 }
 
 function handleSearchCurrencyInput(inputElemet) {
     const listElement = inputElemet.parentElement.parentElement;
-    const filter = inputElemet.value.toUpperCase();
+    const filter = inputElemet.value.toUpperCase().trim();
     const listItems = listElement.querySelectorAll(".item-currency-select-button");
     counter = 0;
     listItems.forEach((item) => {
@@ -106,6 +108,7 @@ function handleSelectionItemClick(event) {
     listItem.parentElement.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.src = listItem.children[0].src;
     const activeList = currencyComponent.querySelector(".active-panel");
     if (activeList) activeList.classList.remove("active-panel");
+    document.querySelector("html").classList.remove("overflow-hidden");
 }
 
 function handleClickWindow(event) {
@@ -114,6 +117,7 @@ function handleClickWindow(event) {
         const listsOfCurrencies = currencyComponent.querySelectorAll("ul");
         listsOfCurrencies.forEach((item, i) => {
             item.classList.remove("active-panel");
+            document.querySelector("html").classList.remove("overflow-hidden");
             currencyComponent.querySelectorAll(".search-currency-input")[i].value = "";
             listsOfCurrencies[i].querySelectorAll(".item-currency-select-button").forEach((item, i) => {
                 item.parentElement.style.display = "";

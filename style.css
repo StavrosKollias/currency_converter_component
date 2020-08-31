@@ -14,11 +14,13 @@
 html{
     font-size: 14px;
     font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
 }
 
 @media only screen and (min-width:600px){
     html{
         font-size: 16px;
+        
     }
 }
 
@@ -30,6 +32,13 @@ html{
 
 body{
     margin:0;
+    padding: 1rem;
+    width: calc(100vw - 2 * 1rem);
+    min-height: calc(100vh);
+}
+
+.overflow-hidden{
+    overflow-y: hidden;
 }
 
 #curency-component{
@@ -168,17 +177,20 @@ body{
 
 .result-converter{
     position: absolute;
+    text-align: center;
     opacity: 0;
+    bottom: 100%;
     color: var(--blue);
     font-weight: bold;
-    margin: 0;
-    transform: translateX(-4rem);
-    transition: all 0.45s ease-in-out;
+    transform: translate(-2rem,0);
+    visibility: hidden;
+    transition: all 0.45s ease-in;
 }
 
 .active-result{
     position: relative;
     opacity: 1;
+    visibility: visible;
     transform: translateX(0);
 }
 
@@ -186,15 +198,18 @@ body{
     position: absolute;
     opacity: 0;
     width: 12rem;
+    bottom: 100%;
     padding: 0.3rem;
     height: 2rem;
     background-color: var(--transparentBlue);
-    transform: translateX(4rem);
-    transition: all 0.45s ease-in-out;
+    transform: translate(2rem,0);
+    visibility: hidden;
+    transition: all 0.45s ease-in;
 }
 
-.actiove-timer{
+.active-timer{
     position: relative;
+    visibility: visible;
     opacity: 1;
     transform: translateX(0);
 }
@@ -225,7 +240,7 @@ body{
     transform:translate(-50%,-50%);
     color: var(--white);
     background-color: var(--transparentBlue);
-    transition: all 0.45s ease-in-out;
+    transition: all 0.25s ease-in-out;
 }
 
 /*------ selection Element------ */
@@ -262,6 +277,7 @@ body{
     display: block !important;
 }
 
+
 .select-container  .fa-angle-down{
     color: var(--lightBlue);
     position: absolute;
@@ -270,34 +286,37 @@ body{
 }
 
 .select-container .select-currency-flag-img{
-    width: 2.2rem;
+    width: 2rem;
+    margin-right: 0.5rem;
 }
 
+.select-container .select-currency-label{
+    font-size: 1.2rem;
+}
 
 /* popup */
 .select-container .currency-list-select{
-    width: calc(100% - 2 * 1rem);
     height: auto;
-    list-style: unset;
+    width: calc(100vw - 2 * 1rem);
     padding: 1rem;
     list-style-type:none;
     margin: 0;
     background-color: var(--white);
     position: fixed;
     top:0;
-    right: 0;
+    left: 0;
     z-index: 9;
     display: none;
     overflow-y: auto;
-    max-height: calc(100vh - 2 * 1rem);
     box-shadow: 0 0 0.5rem var(--lightGray);
-    min-height: 100vh;
+    min-height: calc(100vh - 2rem);
+    max-height: calc(100vh - 2rem);
 }
+
 
 @media only screen and (min-width: 600px){
     .select-container .currency-list-select{
         width: calc(100% - 2 * 1rem);
-        list-style-type:none;
         position: absolute;
         top:0;
         right: 0;
@@ -319,6 +338,7 @@ body{
     display: flex;
     align-items: center;
     padding: 0.3rem;
+    width: calc(100% - 2 * 0.3rem);
     border-radius: 0.5rem;
     transition: all var(--transitionTime) ease-in-out;
 }
@@ -338,6 +358,9 @@ body{
 
 .select-container .currency-list-select .item-currency-select .item-currency-select-button .item-currency-select-label:nth-of-type(2){
     font-size: 0.8rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .select-container .currency-list-select .item-currency-select .item-currency-select-button:hover,
@@ -347,10 +370,6 @@ body{
     background-color: var(--transparentLightGreen);
 }
 
-.select-container .select-currency-label{
-    font-size: 1.2rem;
-    margin-left: 1rem;
-}
 
 .select-container .select-currency-label:nth-of-type(2){
     font-size: 0.8rem;
@@ -411,6 +430,6 @@ body{
 
 
 .select-container .currency-list-select li img{
-    width: 2.1rem;
-    margin-right: 1rem;
+    width: 1.8rem;
+    margin-right: 0.5rem;
 }

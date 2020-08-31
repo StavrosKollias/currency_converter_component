@@ -10,6 +10,7 @@ function getCurrencyComponent() {
 
 async function generateCurrencyComponent() {
     const currencyComponent = getCurrencyComponent();
+    // createHTMLElement(type, id, className, innerText, innerHTML);
     const inputContainer = createHTMLElement("div", null, "input-container", null, null);
     const buttonReverse = createHTMLElement("button", "reverse-button", "reverse-button", null, '<i class="fas fa-exchange-alt"></i>');
     buttonReverse.addEventListener("click", () => { handleSwitchCurrenciesButtonClick(currencyComponent) });
@@ -25,7 +26,7 @@ async function generateCurrencyComponent() {
     inputContainer.appendChild(buttonReverse);
     const rates = await getExchangeRatesFromApi("GBP");
     const currencyNames = await getCurrencyNamesFromApi();
-
+    // generateSelectionElement(rates, currencyNames, selectedCurrency, selectId, inputSearchId, listId)
     const selectCurrency = generateSelectionElement(rates, currencyNames, 1, "curency-amount-select", "search-currency-input-amount", "currency-amount-list");
     const selectCurrencyConvert = generateSelectionElement(rates, currencyNames, 4, "curency-convert-select", "search-currency-input-convert", "currency-convert-list");
     const convertButton = createHTMLElement("button", "convert-button", "convert-button", "Convert", null);
@@ -73,7 +74,7 @@ async function handleConvertButtonClick() {
     startExpiryTimer(10, 0);
     updateTimeElements(0, 10, 0, 0);
     resultCoverter.classList.add("active-result");
-    document.querySelector(".counter-container").classList.add("actiove-timer");
+    document.querySelector(".counter-container").classList.add("active-timer");
 }
 
 function hadleAmountInput(element) {
@@ -134,7 +135,6 @@ async function getCurrencyNamesFromApi() {
     }
 }
 
-
 function createHTMLElement(type, id, className, innerText, innerHTML) {
     const element = document.createElement(type);
     element.className = className;
@@ -154,7 +154,7 @@ function startExpiryTimer(minutes, seconds) {
         if (seconds == 0) {
             if (minutes == 0) {
                 clearInterval(expiryTimer);
-                currencyComponent.querySelector(".counter-container").classList.remove("actiove-timer");
+                currencyComponent.querySelector(".counter-container").classList.remove("active-timer");
                 currencyComponent.querySelector("#result-converter").classList.remove("active-result");
             };
             minutes--;
