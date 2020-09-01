@@ -92,7 +92,7 @@ function hadleAmountInput(element) {
     var value = element.value.replace(",", '').replace(".", "");
     validation ? value = element.value : value;
     const convertButton = document.querySelector(".convert-button");
-    !validation ? convertButton.disabled = false : convertButton.disabled = true;
+    !validation && value ? convertButton.disabled = false : convertButton.disabled = true;
     setErrorMessageVisibility(validation, value, element);
 }
 
