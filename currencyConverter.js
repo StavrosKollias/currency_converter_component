@@ -63,7 +63,7 @@ async function handleConvertButtonClick() {
     const currencyComponent = getCurrencyComponent();
     const selectedCurrency1 = currencyComponent.querySelector("#currency-amount-select").children[1].innerText;
     const selectedCurrency2 = currencyComponent.querySelector("#currency-convert-select").children[1].innerText;
-    const inputAmountValue = currencyComponent.querySelector("#input-amount").value;
+    const inputAmountValue = currencyComponent.querySelector("#input-amount").value.replace(",", '').replace(".", "");;
     const resultCoverter = currencyComponent.querySelector(".result-converter");
     clearInterval(expiryTimer);
     const rates = await getExchangeRatesFromApi(selectedCurrency1);
@@ -75,11 +75,25 @@ async function handleConvertButtonClick() {
     document.querySelector(".counter-container").classList.add("active-timer");
 }
 
+function validateString(value) {
+    const dottsCkeck = value.replace(/[^.]/g, "").length;
+    const commasCkeck = value.replace(/[^,]/g, "").length;
+    const overflowCommasDecimal = dottsCkeck > 1 && commasCkeck > 1 || dottsCkeck > 1 || commasCkeck > 1;
+    const letters = value.replace(",", "").replace(".", "").replace(/[0-9]+/g, "");
+    const includesString = value.includes(letters);
+    var isValid = includesString && letters.length > 0;
+    console.log(`isValid1 ${isValid}`);
+    isValid = isValid && overflowCommasDecimal || isValid || overflowCommasDecimal;
+    return isValid;
+}
+
 function hadleAmountInput(element) {
-    const value = element.value;
+    const validation = validateString(element.value);
+    var value = element.value.replace(",", '').replace(".", "");
+    validation ? value = element.value : value;
     const convertButton = document.querySelector(".convert-button");
-    value && !isNaN(value) ? convertButton.disabled = false : convertButton.disabled = true;
-    setErrorMessageVisibility(isNaN(value), value, element);
+    !validation ? convertButton.disabled = false : convertButton.disabled = true;
+    setErrorMessageVisibility(validation, value, element);
 }
 
 function setErrorMessageVisibility(isVisible, value, inputElement) {
@@ -97,7 +111,6 @@ function setErrorMessageVisibility(isVisible, value, inputElement) {
             inputElement.classList.add("error-input");
             errorMessage.classList.add("active-error");
             errorMessage.innerText = "Reuired Amount";
-
         }
 
     }
@@ -157,7 +170,6 @@ function startExpiryTimer(minutes, seconds) {
     var counterMinutes = 0;
     var counterSeconds = 0;
     expiryTimer = setInterval(() => {
-        updateTimeElements(counterMinutes, minutes, counterSeconds, seconds);
         counterSeconds++;
         if (seconds == 0) {
             if (minutes == 0) {
