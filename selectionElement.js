@@ -124,10 +124,12 @@ function closeActiveSelectionMenu() {
     listsOfCurrencies.forEach((item, i) => {
         item.classList.remove("active-panel");
         document.querySelector("html").classList.remove("overflow-hidden");
-        currencyComponent.querySelectorAll(".search-currency-input")[i].value = "";
-        listsOfCurrencies[i].querySelectorAll(".item-currency-select-button").forEach((item, i) => {
+        item.querySelector(".search-currency-input").value = "";
+        const liSearchInput = item.children[0];
+        item.querySelectorAll(".item-currency-select-button").forEach((item, i) => {
             item.parentElement.style.display = "";
         });
+        setVisibilityErrorSearch(false, liSearchInput);
 
     });
 }
