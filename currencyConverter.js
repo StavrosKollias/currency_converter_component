@@ -77,6 +77,7 @@ async function handleConvertButtonClick() {
     document.querySelector(".counter-container").classList.add("active-timer");
 }
 
+
 function validateValueForConversion(inputAmountValue) {
     var value = inputAmountValue;
     const includesComma = value.includes(",");
