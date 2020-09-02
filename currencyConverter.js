@@ -63,7 +63,10 @@ async function handleConvertButtonClick() {
     const currencyComponent = getCurrencyComponent();
     const selectedCurrency1 = currencyComponent.querySelector("#currency-amount-select").children[1].innerText;
     const selectedCurrency2 = currencyComponent.querySelector("#currency-convert-select").children[1].innerText;
-    const inputAmountValue = currencyComponent.querySelector("#input-amount").value.replace(",", '').replace(".", "");;
+    const inputAmountValue = currencyComponent.querySelector("#input-amount").value;
+    const validation = validateString(inputAmountValue);
+    var value = inputAmountValue.replace(",", '').replace(".", "");
+    validation ? value = element.value : value;
     const resultCoverter = currencyComponent.querySelector(".result-converter");
     clearInterval(expiryTimer);
     const rates = await getExchangeRatesFromApi(selectedCurrency1);
