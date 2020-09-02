@@ -79,7 +79,7 @@ async function handleConvertButtonClick() {
 function validateValueForConversion(currencyComponent, inputAmountValue) {
     var value = inputAmountValue;
     const includesComma = value.includes(",");
-    if (includesComma) value = value.replace(",", "");
+    if (includesComma) value = value.replace(/[,]/g, "");
     currencyComponent.querySelector("#input-amount").value = value;
     return Number(value);
 }
@@ -87,7 +87,7 @@ function validateValueForConversion(currencyComponent, inputAmountValue) {
 function validateString(value) {
     const dotsCkeck = value.replace(/[^.]/g, "").length;
     const overflowDecimal = dotsCkeck > 1;
-    const letters = value.replace(",", "").replace(".", "").replace(/[0-9]+/g, "");
+    const letters = value.replace(/[,]/g, "").replace(/[.]/g, "").replace(/[0-9]+/g, "");
     const includesString = value.includes(letters);
     var isValid = includesString && letters.length > 0;
     isValid = isValid && overflowDecimal || isValid || overflowDecimal;
