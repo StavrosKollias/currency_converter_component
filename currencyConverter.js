@@ -68,7 +68,10 @@ async function handleConvertButtonClick() {
     const isNotValid = validateString(inputAmountValue);
     var value = inputAmountValue;
     const includesComma = value.includes(",");
-    includesComma ? value = value.replace(",", "") : value;
+    const lastIndexOfComma = value.lastIndexOf(",");
+    const thousandsCheck = lastIndexOfComma - value.length - 1 == 3;
+    includesComma && !thousandsCheck ? value = value.replace(",", "") : value;
+    includesComma && !thousandsCheck ? currencyComponent.querySelector("#input-amount").value = value : false;
     const resultCoverter = currencyComponent.querySelector(".result-converter");
     const rates = await getExchangeRatesFromApi(selectedCurrency1);
     var convertedValue = Number(value) * rates[selectedCurrency2];
