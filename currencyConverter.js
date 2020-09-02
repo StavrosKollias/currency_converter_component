@@ -68,7 +68,7 @@ async function handleConvertButtonClick() {
     const resultCoverter = currencyComponent.querySelector(".result-converter");
     const rates = await getExchangeRatesFromApi(selectedCurrency1);
     const value = validateValueForConversion(currencyComponent, inputAmountValue);
-    var convertedValue = Number(value) * rates[selectedCurrency2];
+    var convertedValue = value * rates[selectedCurrency2];
     resultCoverter.innerText = value + " " + selectedCurrency1 + " is equivalent to " + convertedValue.toFixed(4) + " " + selectedCurrency2;
     startExpiryTimer(10, 0);
     updateTimeElements(0, 10, 0, 0);
@@ -79,21 +79,18 @@ async function handleConvertButtonClick() {
 function validateValueForConversion(currencyComponent, inputAmountValue) {
     var value = inputAmountValue;
     const includesComma = value.includes(",");
-    const lastIndexOfComma = value.lastIndexOf(",");
-    const thousandsCheck = lastIndexOfComma - value.length - 1 == 3;
-    includesComma && !thousandsCheck ? value = value.replace(",", "") : value;
-    includesComma && !thousandsCheck ? currencyComponent.querySelector("#input-amount").value = value : false;
-    return value;
+    if (includesComma) value = value.replace(",", "");
+    currencyComponent.querySelector("#input-amount").value = value;
+    return Number(value);
 }
 
 function validateString(value) {
     const dotsCkeck = value.replace(/[^.]/g, "").length;
-    const commasCkeck = value.replace(/[^,]/g, "").length;
-    const overflowCommasDecimal = dotsCkeck > 1 && commasCkeck > 1 || dotsCkeck > 1 || commasCkeck > 1;
+    const overflowDecimal = dotsCkeck > 1;
     const letters = value.replace(",", "").replace(".", "").replace(/[0-9]+/g, "");
     const includesString = value.includes(letters);
     var isValid = includesString && letters.length > 0;
-    isValid = isValid && overflowCommasDecimal || isValid || overflowCommasDecimal;
+    isValid = isValid && overflowDecimal || isValid || overflowDecimal;
     return isValid;
 }
 
