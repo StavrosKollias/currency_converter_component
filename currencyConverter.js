@@ -60,18 +60,19 @@ var expiryTimer;
 generateCurrencyComponent();
 
 async function handleConvertButtonClick() {
+    clearInterval(expiryTimer);
     const currencyComponent = getCurrencyComponent();
     const selectedCurrency1 = currencyComponent.querySelector("#currency-amount-select").children[1].innerText;
     const selectedCurrency2 = currencyComponent.querySelector("#currency-convert-select").children[1].innerText;
     const inputAmountValue = currencyComponent.querySelector("#input-amount").value;
-    const validation = validateString(inputAmountValue);
-    var value = inputAmountValue.replace(",", '').replace(".", "");
-    validation ? value = element.value : value;
+    const isNotValid = validateString(inputAmountValue);
+    var value = inputAmountValue;
+    const includesComma = value.includes(",");
+    includesComma ? value = value.replace(",", "") : value;
     const resultCoverter = currencyComponent.querySelector(".result-converter");
-    clearInterval(expiryTimer);
     const rates = await getExchangeRatesFromApi(selectedCurrency1);
-    var convertedValue = Number(inputAmountValue) * rates[selectedCurrency2];
-    resultCoverter.innerText = inputAmountValue + " " + selectedCurrency1 + " is equivalent to " + convertedValue.toFixed(4) + " " + selectedCurrency2;
+    var convertedValue = Number(value) * rates[selectedCurrency2];
+    resultCoverter.innerText = value + " " + selectedCurrency1 + " is equivalent to " + convertedValue.toFixed(4) + " " + selectedCurrency2;
     startExpiryTimer(10, 0);
     updateTimeElements(0, 10, 0, 0);
     resultCoverter.classList.add("active-result");
@@ -79,24 +80,23 @@ async function handleConvertButtonClick() {
 }
 
 function validateString(value) {
-    const dottsCkeck = value.replace(/[^.]/g, "").length;
+    const dotsCkeck = value.replace(/[^.]/g, "").length;
     const commasCkeck = value.replace(/[^,]/g, "").length;
-    const overflowCommasDecimal = dottsCkeck > 1 && commasCkeck > 1 || dottsCkeck > 1 || commasCkeck > 1;
+    const overflowCommasDecimal = dotsCkeck > 1 && commasCkeck > 1 || dotsCkeck > 1 || commasCkeck > 1;
     const letters = value.replace(",", "").replace(".", "").replace(/[0-9]+/g, "");
     const includesString = value.includes(letters);
     var isValid = includesString && letters.length > 0;
-    console.log(`isValid1 ${isValid}`);
     isValid = isValid && overflowCommasDecimal || isValid || overflowCommasDecimal;
     return isValid;
 }
 
 function hadleAmountInput(element) {
-    const validation = validateString(element.value);
+    const isVisible = validateString(element.value);
     var value = element.value.replace(",", '').replace(".", "");
-    validation ? value = element.value : value;
+    isVisible ? value = element.value : value;
     const convertButton = document.querySelector(".convert-button");
-    !validation && value ? convertButton.disabled = false : convertButton.disabled = true;
-    setErrorMessageVisibility(validation, value, element);
+    !isVisible && value ? convertButton.disabled = false : convertButton.disabled = true;
+    setErrorMessageVisibility(isVisible, value, element);
 }
 
 function setErrorMessageVisibility(isVisible, value, inputElement) {
