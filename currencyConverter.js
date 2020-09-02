@@ -69,7 +69,7 @@ async function handleConvertButtonClick() {
     const rates = await getExchangeRatesFromApi(selectedCurrency1);
     const value = validateValueForConversion(currencyComponent, inputAmountValue);
     var convertedValue = value * rates[selectedCurrency2];
-    resultCoverter.innerText = value + " " + selectedCurrency1 + " is equivalent to " + convertedValue.toFixed(4) + " " + selectedCurrency2;
+    resultCoverter.innerText = value.toLocaleString() + " " + selectedCurrency1 + " is equivalent to " + Number(convertedValue.toFixed(4)).toLocaleString() + " " + selectedCurrency2;
     startExpiryTimer(10, 0);
     updateTimeElements(0, 10, 0, 0);
     resultCoverter.classList.add("active-result");
@@ -80,7 +80,6 @@ function validateValueForConversion(currencyComponent, inputAmountValue) {
     var value = inputAmountValue;
     const includesComma = value.includes(",");
     if (includesComma) value = value.replace(/[,]/g, "");
-    currencyComponent.querySelector("#input-amount").value = value;
     return Number(value);
 }
 
