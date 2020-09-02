@@ -65,21 +65,25 @@ async function handleConvertButtonClick() {
     const selectedCurrency1 = currencyComponent.querySelector("#currency-amount-select").children[1].innerText;
     const selectedCurrency2 = currencyComponent.querySelector("#currency-convert-select").children[1].innerText;
     const inputAmountValue = currencyComponent.querySelector("#input-amount").value;
-    const isNotValid = validateString(inputAmountValue);
-    var value = inputAmountValue;
-    const includesComma = value.includes(",");
-    const lastIndexOfComma = value.lastIndexOf(",");
-    const thousandsCheck = lastIndexOfComma - value.length - 1 == 3;
-    includesComma && !thousandsCheck ? value = value.replace(",", "") : value;
-    includesComma && !thousandsCheck ? currencyComponent.querySelector("#input-amount").value = value : false;
     const resultCoverter = currencyComponent.querySelector(".result-converter");
     const rates = await getExchangeRatesFromApi(selectedCurrency1);
+    const value = validateValueForConversion(currencyComponent, inputAmountValue);
     var convertedValue = Number(value) * rates[selectedCurrency2];
     resultCoverter.innerText = value + " " + selectedCurrency1 + " is equivalent to " + convertedValue.toFixed(4) + " " + selectedCurrency2;
     startExpiryTimer(10, 0);
     updateTimeElements(0, 10, 0, 0);
     resultCoverter.classList.add("active-result");
     document.querySelector(".counter-container").classList.add("active-timer");
+}
+
+function validateValueForConversion(currencyComponent, inputAmountValue) {
+    var value = inputAmountValue;
+    const includesComma = value.includes(",");
+    const lastIndexOfComma = value.lastIndexOf(",");
+    const thousandsCheck = lastIndexOfComma - value.length - 1 == 3;
+    includesComma && !thousandsCheck ? value = value.replace(",", "") : value;
+    includesComma && !thousandsCheck ? currencyComponent.querySelector("#input-amount").value = value : false;
+    return value;
 }
 
 function validateString(value) {
