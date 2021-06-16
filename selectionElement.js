@@ -3,14 +3,16 @@ function generateSelectionElement(rates, currencyNames, selectedCurrency, select
     const selectionContainer = createHTMLElement("button", selectId, "select-container", null, null);
     const imgCurrency = createHTMLElement("img", null, "select-currency-flag-img", null, null);
     imgCurrency.src = "https://www.countryflags.io/gb/flat/64.png";
-    const spanLabel = createHTMLElement("span", null, "select-currency-label", null, null,);
-    const spanLabelName = createHTMLElement("span", null, "select-currency-label", null, null,);
+    const spanLabel = createHTMLElement("span", null, "select-currency-label", null, null);
+    const spanLabelName = createHTMLElement("span", null, "select-currency-label", null, null);
     const listCurrenciesContainer = createHTMLElement("ul", listId, "currency-list-select", null, null);
     const liSearchContainer = createHTMLElement("li", "seach-currency-container", "seach-currency-container", null, null);
     const errorMessageSearch = createHTMLElement("span", null, "error-message-search", "No currencies found", null);
     const searchCurrencyInput = createHTMLElement("input", inputSearchId, "search-currency-input", null, null);
     searchCurrencyInput.placeholder = "Search Currency";
-    searchCurrencyInput.addEventListener("input", (e) => { handleSearchCurrencyInput(e.target); });
+    searchCurrencyInput.addEventListener("input", (e) => {
+        handleSearchCurrencyInput(e.target);
+    });
     const iElementArrowDown = createHTMLElement("i", null, "fas fa-angle-down", null, null);
     const iElementSearch = createHTMLElement("i", null, "fas fa-search", null, null);
     liSearchContainer.appendChild(iElementSearch);
@@ -20,7 +22,9 @@ function generateSelectionElement(rates, currencyNames, selectedCurrency, select
     selectionContainer.appendChild(spanLabel);
     selectionContainer.appendChild(spanLabelName);
     selectionContainer.appendChild(iElementArrowDown);
-    selectionContainer.addEventListener("click", (e) => { handleSelectionButtonClick(e); });
+    selectionContainer.addEventListener("click", (e) => {
+        handleSelectionButtonClick(e);
+    });
     listCurrenciesContainer.appendChild(liSearchContainer);
     addListItemsForToSelection(rates, currencyNames, listCurrenciesContainer);
     listCurrenciesContainer.children[selectedCurrency].children[0].classList.add("selected-currency");
@@ -41,7 +45,9 @@ function addListItemToSelectionList(selectionList, value, currencyName) {
     const liItemContainer = createHTMLElement("li", null, "item-currency-select", null, null, null);
     const button = createHTMLElement("button", null, `item-currency-select-button ${value}`, null, null, null);
     const imgItemCurrency = createHTMLElement("img", null, "item-currency-flag-img", null, null, null);
-    const flagType = value.substring(0, value.length - 1).toLowerCase();
+    var flagType = value.substring(0, value.length - 1).toLowerCase();
+    if (flagType === "xo") flagType = "cf";
+    if (flagType === "xp") flagType = "pf";
     imgItemCurrency.src = `https://www.countryflags.io/${flagType}/flat/64.png`;
     const spanLabelItemCurrency = createHTMLElement("span", null, "item-currency-select-label", value, null, null);
     const spanLabelItemCountryName = createHTMLElement("span", null, "item-currency-select-label", " /" + currencyName, null, null);
@@ -50,7 +56,7 @@ function addListItemToSelectionList(selectionList, value, currencyName) {
     button.appendChild(spanLabelItemCountryName);
     liItemContainer.appendChild(button);
     button.addEventListener("click", (event) => {
-        handleSelectionItemClick(event)
+        handleSelectionItemClick(event);
     });
     selectionList.appendChild(liItemContainer);
 }
@@ -65,8 +71,9 @@ function handleSelectionButtonClick(event) {
     const listOfCurrencies = button.children[4];
     listOfCurrencies.classList.add("active-panel");
     listOfCurrencies.children[0].children[1].focus();
-    window.innerHeight < 400 && window.innerWidth > 600 ?
-        document.querySelector("html").classList.remove("overflow-hidden") : document.querySelector("html").classList.add("overflow-hidden");
+    window.innerHeight < 400 && window.innerWidth > 600
+        ? document.querySelector("html").classList.remove("overflow-hidden")
+        : document.querySelector("html").classList.add("overflow-hidden");
 }
 
 function handleSearchCurrencyInput(inputElemet) {
@@ -79,11 +86,13 @@ function handleSearchCurrencyInput(inputElemet) {
         const labelItem2 = item.children[2];
         const labelItemTxt = labelItem.textContent || labelItem.innerText;
         const labelItem2Txt = labelItem2.textContent || labelItem2.innerText;
-        labelItemTxt.toUpperCase().indexOf(filter) > -1 || labelItem2Txt.toUpperCase().indexOf(filter) > -1 ? item.parentElement.style.display = "" : item.parentElement.style.display = "none";
+        labelItemTxt.toUpperCase().indexOf(filter) > -1 || labelItem2Txt.toUpperCase().indexOf(filter) > -1
+            ? (item.parentElement.style.display = "")
+            : (item.parentElement.style.display = "none");
         item.parentElement.offsetWidth > 0 && item.parentElement.offsetHeight > 0 ? counter++ : counter--;
     });
     const isVisible = counter == -listItems.length;
-    setVisibilityErrorSearch(isVisible, inputElemet.parentElement)
+    setVisibilityErrorSearch(isVisible, inputElemet.parentElement);
 }
 
 function setVisibilityErrorSearch(isVisible, element) {
@@ -94,7 +103,7 @@ function setVisibilityErrorSearch(isVisible, element) {
     } else {
         errorMessage.style.opacity = "0";
         element.style.borderBottom = "1px solid #a1a1a1";
-    };
+    }
 }
 
 function handleSelectionItemClick(event) {
@@ -113,7 +122,12 @@ function handleSelectionItemClick(event) {
 }
 
 function handleClickWindow(event) {
-    if (event.target.className != "select-container" && event.target.parentElement.className != "select-container" && event.target.className != "search-currency-input" && event.target.parentElement.className != "select-seach-currency") {
+    if (
+        event.target.className != "select-container" &&
+        event.target.parentElement.className != "select-container" &&
+        event.target.className != "search-currency-input" &&
+        event.target.parentElement.className != "select-seach-currency"
+    ) {
         closeActiveSelectionMenu();
     }
 }
@@ -130,7 +144,6 @@ function closeActiveSelectionMenu() {
             item.parentElement.style.display = "";
         });
         setVisibilityErrorSearch(false, liSearchInput);
-
     });
 }
 
@@ -139,10 +152,8 @@ window.addEventListener("click", (event) => {
 });
 
 window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" || event.key === 27) { // escape key maps to keycode `27`
+    if (event.key === "Escape" || event.key === 27) {
+        // escape key maps to keycode `27`
         closeActiveSelectionMenu();
     }
-})
-
-
-
+});

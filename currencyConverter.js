@@ -13,7 +13,9 @@ async function generateCurrencyComponent() {
     // createHTMLElement(type, id, className, innerText, innerHTML);
     const inputContainer = createHTMLElement("div", null, "input-container", null, null);
     const buttonReverse = createHTMLElement("button", "reverse-button", "reverse-button", null, '<i class="fas fa-exchange-alt"></i>');
-    buttonReverse.addEventListener("click", () => { handleSwitchCurrenciesButtonClick(currencyComponent) });
+    buttonReverse.addEventListener("click", () => {
+        handleSwitchCurrenciesButtonClick(currencyComponent);
+    });
     const label = createHTMLElement("label", "input-label", "input-label", "Amount", null);
     const inputAmount = createHTMLElement("input", "input-amount", "currency-input", null, null);
     inputAmount.placeholder = "Enter Amount";
@@ -69,14 +71,14 @@ async function handleConvertButtonClick() {
     const rates = await getExchangeRatesFromApi(selectedCurrency1);
     const value = validateValueForConversion(inputAmountValue);
     var convertedValue = value * rates[selectedCurrency2];
-    resultCoverter.innerText = value.toLocaleString() + " " + selectedCurrency1 + " is equivalent to " + Number(convertedValue.toFixed(4)).toLocaleString() + " " + selectedCurrency2;
+    resultCoverter.innerText =
+        value.toLocaleString() + " " + selectedCurrency1 + " is equivalent to " + Number(convertedValue.toFixed(4)).toLocaleString() + " " + selectedCurrency2;
     currencyComponent.querySelector("#input-amount").value = value.toLocaleString();
     startExpiryTimer(10, 0);
     updateTimeElements(0, 10, 0, 0);
     resultCoverter.classList.add("active-result");
     document.querySelector(".counter-container").classList.add("active-timer");
 }
-
 
 function validateValueForConversion(inputAmountValue) {
     var value = inputAmountValue;
@@ -88,19 +90,22 @@ function validateValueForConversion(inputAmountValue) {
 function validateString(value) {
     const dotsCkeck = value.replace(/[^.]/g, "").length;
     const overflowDecimal = dotsCkeck > 1;
-    const letters = value.replace(/[,]/g, "").replace(/[.]/g, "").replace(/[0-9]+/g, "");
+    const letters = value
+        .replace(/[,]/g, "")
+        .replace(/[.]/g, "")
+        .replace(/[0-9]+/g, "");
     const includesString = value.includes(letters);
     var isValid = includesString && letters.length > 0;
-    isValid = isValid && overflowDecimal || isValid || overflowDecimal;
+    isValid = (isValid && overflowDecimal) || isValid || overflowDecimal;
     return isValid;
 }
 
 function hadleAmountInput(element) {
     const isVisible = validateString(element.value);
-    var value = element.value.replace(",", '').replace(".", "");
-    isVisible ? value = element.value : value;
+    var value = element.value.replace(",", "").replace(".", "");
+    isVisible ? (value = element.value) : value;
     const convertButton = document.querySelector(".convert-button");
-    !isVisible && value ? convertButton.disabled = false : convertButton.disabled = true;
+    !isVisible && value ? (convertButton.disabled = false) : (convertButton.disabled = true);
     setErrorMessageVisibility(isVisible, value, element);
 }
 
@@ -118,9 +123,8 @@ function setErrorMessageVisibility(isVisible, value, inputElement) {
         } else {
             inputElement.classList.add("error-input");
             errorMessage.classList.add("active-error");
-            errorMessage.innerText = "Reuired Amount";
+            errorMessage.innerText = "Required Amount";
         }
-
     }
 }
 
@@ -184,7 +188,7 @@ function startExpiryTimer(minutes, seconds) {
                 clearInterval(expiryTimer);
                 currencyComponent.querySelector(".counter-container").classList.remove("active-timer");
                 currencyComponent.querySelector("#result-converter").classList.remove("active-result");
-            };
+            }
             minutes--;
             seconds = 59;
             counterMinutes++;
@@ -199,8 +203,13 @@ function updateTimeElements(counterMinutes, minutes, counterSeconds, seconds) {
     const currencyComponent = getCurrencyComponent();
     const minutesElement = currencyComponent.querySelector("#minutes-display");
     const secondsElement = currencyComponent.querySelector("#seconds-display");
-    if (minutesElement.innerText != minutes + "'") minutesElement.style.transform = `translate(-50%,-50%) rotate(${180 * counterMinutes}deg) scale(${Math.pow(-1, counterMinutes)},${Math.pow(-1, counterMinutes)}) `;
-    if (secondsElement.innerText != seconds + '"') secondsElement.style.transform = `translate(-50%,-50%) rotate(${180 * counterSeconds}deg) scale(${Math.pow(-1, counterSeconds)},${Math.pow(-1, counterSeconds)})`;
+    if (minutesElement.innerText != minutes + "'")
+        minutesElement.style.transform = `translate(-50%,-50%) rotate(${180 * counterMinutes}deg) scale(${Math.pow(-1, counterMinutes)},${Math.pow(
+            -1,
+            counterMinutes
+        )}) `;
+    if (secondsElement.innerText != seconds + '"')
+        secondsElement.style.transform = `translate(-50%,-50%) rotate(${180 * counterSeconds}deg) scale(${Math.pow(-1, counterSeconds)},${Math.pow(-1, counterSeconds)})`;
     minutesElement.innerText = minutes + "'";
     secondsElement.innerText = seconds + '"';
 }
